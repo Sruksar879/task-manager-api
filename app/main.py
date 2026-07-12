@@ -17,7 +17,7 @@ def root():
 def health():
     return{
         "status": "UP",
-        "version" : "1.0.0"
+        "service" : "Task Manager API"
     }
 
 @app.get("/about")
