@@ -11,3 +11,10 @@ def get_tasks():
 @router.post("/")
 def create_task():
     return { "message" : "Task created successfully"}
+
+
+@router.delete("/{task_id}")
+def delete_task(task_id:int):
+    return{
+        "message" : f"Task {task_id} deleted successfully"
+    }
