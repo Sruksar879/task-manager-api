@@ -1,16 +1,16 @@
 from fastapi import APIRouter
+from app.models.task import Task
+from app.services.task_service import create_task, get_all_tasks
 
 router = APIRouter()
 
 @router.get("/")
 def get_tasks():
-    return {
-        "message": "List of tasks will be returned here."
-    }
+    return get_all_tasks()
 
 @router.post("/")
-def create_task():
-    return { "message" : "Task created successfully"}
+def create_new_task(task:Task):
+    return create_task(task)
 
 
 @router.delete("/{task_id}")

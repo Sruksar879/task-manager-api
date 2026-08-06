@@ -1,15 +1,21 @@
 from fastapi import FastAPI
 from app.api.task_routes import router as task_router
+from app.core.config import settings
 
 # Create the FastAPI application
-app = FastAPI()
+app = FastAPI(
+    title = settings.APP_NAME,
+    version = settings.VERSION,
+    debug = settings.DEBUG
+
+)
 app.include_router(task_router, prefix="/tasks", tags=["Tasks"])
 
 # Root endpoint
 @app.get("/")
 def root():
     return {
-        "message" : "Welcome to Task Manager API!"
+        "message" : f"Welcome back to {settings.APP_NAME}!"
     }
 
 # Health check endpoint
@@ -17,8 +23,8 @@ def root():
 def health():
     return{
         "status": "UP",
-        "version" : "1.0.0",
-        "service" : "Task Manager API"
+        "version" : settings.VERSION,
+        "service" : settings.APP_NAME
     }
 
 @app.get("/about")
