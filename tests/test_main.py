@@ -17,7 +17,9 @@ def test_health():
 
     assert response.status_code == 200
     assert response.json() == {
-        "status" : "Healthy"
+        "status" : "Healthy",
+        "version" : 1.0,
+        "service" : "Task Manager API"
     }    
 
     

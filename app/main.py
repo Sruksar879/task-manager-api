@@ -15,14 +15,14 @@ app.include_router(task_router, prefix="/tasks", tags=["Tasks"])
 @app.get("/")
 def root():
     return {
-        "message" : f"Welcome back to {settings.APP_NAME}!"
+        "message" : f"Welcome to {settings.APP_NAME}!"
     }
 
 # Health check endpoint
 @app.get("/health")
 def health():
     return{
-        "status": "UP",
+        "status": "Healthy",
         "version" : settings.VERSION,
         "service" : settings.APP_NAME
     }
