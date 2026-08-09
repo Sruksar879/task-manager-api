@@ -8,12 +8,13 @@ pipeline {
         }
         stage('Install Dependencies'){
             steps{
-                sh 'pip install -r requirements.txt'
+                sh 'python3 -m venv .venv'
+                sh '.venv/bin/pip install -r requirements.txt'
             }
         }
         stage('Run Test'){
             steps{
-             sh 'pytest'
+             sh '.venv/bin/pytest'
             }
         }
         stage('Build Docker Image'){
