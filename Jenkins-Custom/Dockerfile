@@ -10,4 +10,8 @@ RUN apt-get update && \
     docker.io && \
     apt-get clean
 
+# Make the docker group use the same GID as the mounted Docker socket
+RUN groupmod -g 0 docker && \
+    usermod -aG docker jenkins
+
 USER jenkins
