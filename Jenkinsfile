@@ -17,11 +17,30 @@ pipeline {
              sh '.venv/bin/pytest'
             }
         }
-        stage('Build Docker Image'){
-            steps{
+        stage('Build Docker Image') {
+            steps {
                 sh 'docker build -t task-manager-api:v1 .'
             }
         }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )
+            ]) 
+            {
+                sh '''
+                    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                    docker tag task-manager-api:v1 $DOCKER_USERNAME/task-manager-api:v1
+                    docker push $DOCKER_USERNAME/task-manager-api:v1
+                '''
+            }
+        }
+     }
 
     }
 }
