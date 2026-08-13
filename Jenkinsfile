@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t task-manager-api:v1 .'
+                sh 'docker build -t task-manager-api:v2 .'
             }
         }
 
@@ -35,12 +35,27 @@ pipeline {
             {
                 sh '''
                     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                    docker tag task-manager-api:v1 $DOCKER_USERNAME/task-manager-api:v1
-                    docker push $DOCKER_USERNAME/task-manager-api:v1
+                    docker tag task-manager-api:v2 $DOCKER_USERNAME/task-manager-api:v1
+                    docker push $DOCKER_USERNAME/task-manager-api:v2
                 '''
             }
         }
      }
+     stage('Deploy') {
+            steps {
+                sh '''
+                    docker stop task-manager-prod || true
+                    docker rm task-manager-prod || true
+
+                    docker pull sruksar879/task-manager-api:v2
+
+                    docker run -d \
+                        --name task-manager-prod \
+                        -p 8001:8000 \
+                        sruksar879/task-manager-api:v2
+                '''
+            }
+        }
 
     }
 }
